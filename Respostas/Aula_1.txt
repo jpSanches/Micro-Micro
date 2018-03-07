@@ -1,13 +1,27 @@
-1.O que s„o sistemas embarcados?
-Sistemas embarcados s„o sistemas computacionais com alta especificidade e com baixas complexidade e capacidade de processamento.AlÈm disso, independem de outros computadores para desempenhar suas funÁıes. Geralmente a funÁ„o desempenhada j· È determinada previamente para o projeto, mesmo que ainda em alguns casos seja possÌvel a atulalizaÁ„o do sistema.
+1.O que s√£o sistemas embarcados?
+Sistemas embarcados s√£o sistemas computacionais com alta especificidade e com baixas complexidade e capacidade de processamento.Al√©m disso, independem de outros computadores para desempenhar suas fun√ß√µes. Geralmente a fun√ß√£o desempenhada j√° √© determinada previamente para o projeto, mesmo que ainda em alguns casos seja poss√≠vel a atulaliza√ß√£o do sistema.
 
-2.O que s„o sistemas microprocesssados?
- Um sistema microprocessado È um grupo mais restrito dentro dfe sistemas embarcados. Nesse tipo de sistema, n„o h· alguns perifÈricos que constam em microcontroladores
-3.Apresente aplicaÁıes de sistemas embarcados: (a) para a ind˙stria automotiva; (b) para eletrodomÈsticos; (c) para automaÁ„o industrial.
- a) Na ind˙stria automotiva,  os sistemas embarcados s„o utilizados, por exemplo, para um sistema de reconhecimento de chuva para acionar os limpa-vidros em um carro.
- b) Nos eletrodomÈsticos, a inteligÍncia por tr·s de um termostato em um ar-condicionado pode ser classificado como um sistema embarcado.
- c) Na automaÁ„o industrial, um controlador de qualidade autom·tico que pode, por exemplo, separar alimentos defeituosos da linha de produÁ„o pode ser classificado como um sistema embarcado.
+2.O que s√£o sistemas microprocesssados?
+ Um sistema microprocessado √© um sistema simples em sua arquitetura, que consiste em incorporar fun√ß√µes de uma UCP em um √∫nico circuito integrado. S√£o sistemas que aceitam entradas digitais como entrada, processam esses dados a partir das instru√ß√µes programadas ao microprocessador e fornecem os resultados dos processos. Funcionam a partir da leitura sequencial de instru√ß√µes guardadas em mem√≥ria.
+ 
+3.Apresente aplica√ß√µes de sistemas embarcados: (a) para a ind√∫stria automotiva; (b) para eletrodom√©sticos; (c) para automa√ß√£o industrial.
+ a) Na ind√∫stria automotiva,  os sistemas embarcados s√£o utilizados, por exemplo, para um sistema de reconhecimento de chuva para acionar os limpa-vidros em um carro.
+ b) Nos eletrodom√©sticos, a intelig√™ncia por tr√°s de um termostato em um ar-condicionado pode ser classificado como um sistema embarcado.
+ c) Na automa√ß√£o industrial, um controlador de qualidade autom√°tico que pode, por exemplo, separar alimentos defeituosos da linha de produ√ß√£o pode ser classificado como um sistema embarcado.
 
-4.Cite arquiteturas possÌveis e as diferenÁas entre elas.
+4.Cite arquiteturas poss√≠veis e as diferen√ßas entre elas.
+Arquitetura de Von Neumann: 
+ - mem√≥ria √∫nica para instru√ß√µes e dados;
+ - procesasdor precisa buscar as instru√ß√µes em um clock separado do clock dos dados. ( requer dois clocks);
+ - mais r√°pido;
+ - mais simples de projetar;
+ 
+Arquitetura de Harvard: 
+ - mem√≥rias separadas para dados e instru√ß√µes;
+ - um √∫nico clock √© suficiente, pois s√£o usados caminhos diferentes para acessar dados e instru√ß√µes;
+ - mais devagar;
+ - mais complexo de projetar;
 
-5.Por que usamos o MSP430 na disciplina, ao invÈs de outro microcontrolador?
+
+5.Por que usamos o MSP430 na disciplina, ao inv√©s de outro microcontrolador?
+Na disciplina, foi utilizado este microcontrolador devido √† sua proximidade ao que √© utilizado no mercado de trabalho. Pensa-se em arduino em primeira m√£o, quando fala-se de microcontroladores. Por√©m, arduino √© uma plataforma voltada √† prototipagem, o que difere do equipamento escolhido na disciplina, que se aproxima muito mais do produto final.
