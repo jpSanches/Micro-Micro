@@ -1,0 +1,13 @@
+1.O que são sistemas embarcados?
+Sistemas embarcados são sistemas computacionais com alta especificidade e com baixas complexidade e capacidade de processamento.Além disso, independem de outros computadores para desempenhar suas funções. Geralmente a função desempenhada já é determinada previamente para o projeto, mesmo que ainda em alguns casos seja possível a atulalização do sistema.
+
+2.O que são sistemas microprocesssados?
+ Um sistema microprocessado é um grupo mais restrito dentro dfe sistemas embarcados. Nesse tipo de sistema, não há alguns periféricos que constam em microcontroladores
+3.Apresente aplicações de sistemas embarcados: (a) para a indústria automotiva; (b) para eletrodomésticos; (c) para automação industrial.
+ a) Na indústria automotiva,  os sistemas embarcados são utilizados, por exemplo, para um sistema de reconhecimento de chuva para acionar os limpa-vidros em um carro.
+ b) Nos eletrodomésticos, a inteligência por trás de um termostato em um ar-condicionado pode ser classificado como um sistema embarcado.
+ c) Na automação industrial, um controlador de qualidade automático que pode, por exemplo, separar alimentos defeituosos da linha de produção pode ser classificado como um sistema embarcado.
+
+4.Cite arquiteturas possíveis e as diferenças entre elas.
+
+5.Por que usamos o MSP430 na disciplina, ao invés de outro microcontrolador?
