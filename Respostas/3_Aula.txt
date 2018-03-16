@@ -1,4 +1,4 @@
-1.Dada uma variável a do tipo char (um byte), escreva os trechos de código em C para: 
+1.Dada uma variÃ¡vel a do tipo char (um byte), escreva os trechos de cÃ³digo em C para: 
 	(a) Somente setar o bit menos significativo de a.
 		a |= 0x01;
 
@@ -18,25 +18,25 @@
 		a ^= 0xF0;
 		a |= 0x0F; 
 
-2.Considerando a placa Launchpad do MSP430, escreva o código em C para piscar os dois LEDs ininterruptamente.
+2.Considerando a placa Launchpad do MSP430, escreva o cÃ³digo em C para piscar os dois LEDs ininterruptamente.
 
-#include <msp430g2553.h>
+#include <msp430.h>
 #define LED1 BIT0
-#define LED2 BIT6
+#define LED2 BIT1
 
 void main (void){
-	int count;
-	WDTCTL = WDTPW|WDTHOLD;
-	P1DIR  = LED1 + LED2;
-	P1OUT = LED1;
-	for(;;){
-		P1OUT ^= (LED1 + LED2);
-		for(count = 0; count < 1000; count++){		
-		};
-	};
-}	
-
-3.Considerando a placa Launchpad do MSP430, escreva o código em C para piscar duas vezes os dois LEDs sempre que o usuário pressionar o botão.
+    unsigned volatile int count;
+    WDTCTL = WDTPW|WDTHOLD;
+    PM5CTL0 &= ~LOCKLPM5;
+    P1DIR  = LED1 + LED2;
+    P1OUT = LED1;
+    for(;;){
+        P1OUT ^= (LED1 + LED2);
+        for(count = 0; count < 32000; count++){
+        };
+    };
+}
+3.Considerando a placa Launchpad do MSP430, escreva o cÃ³digo em C para piscar duas vezes os dois LEDs sempre que o usuÃ¡rio pressionar o botÃ£o.
 
 #include <msp430g2553.h>
 #define LED1 BIT0
@@ -64,8 +64,8 @@ void main (void){
 	};
 }	
 
-4.Considerando a placa Launchpad do MSP430, faça uma função em C que pisca os dois LEDs uma vez.
+4.Considerando a placa Launchpad do MSP430, faÃ§a uma funÃ§Ã£o em C que pisca os dois LEDs uma vez.
 
-5.Reescreva o código da questão 2 usando a função da questão 4.
+5.Reescreva o cÃ³digo da questÃ£o 2 usando a funÃ§Ã£o da questÃ£o 4.
 
-6.Reescreva o código da questão 3 usando a função da questão 4.
+6.Reescreva o cÃ³digo da questÃ£o 3 usando a funÃ§Ã£o da questÃ£o 4.
