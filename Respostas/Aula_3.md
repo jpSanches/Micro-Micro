@@ -31,6 +31,7 @@ void main (void){
     PM5CTL0 &= ~LOCKLPM5;
     P1DIR  = LED1 + LED2;
     P1OUT = LED1;
+    
     for(;;){
         P1OUT ^= (LED1 + LED2);
         for(count = 0; count < 32000; count++){
@@ -55,7 +56,7 @@ void main (void){
 
 	for(;;){
 		if(BTN & P1OUT == 0){
-			P1OUT = LED1 + LED2;			//liga
+			P1OUT = LED1 + LED2;							//liga
 
 			for(count = 0; count < 1000; count++){		
 			}
@@ -65,7 +66,7 @@ void main (void){
 			for(count = 0; count < 1000; count++){		
 			}
 
-			P1OUT = LED1 + LED2;			//liga
+			P1OUT = LED1 + LED2;							//liga
 
 			for(count = 0; count < 1000; count++){		
 			}
@@ -80,12 +81,12 @@ void main (void){
 	void pisca(){
 	unsigned volatile int counter;
 	P1OUT ^= LEDS;
-  P2OUT ^= BTN;
+ 	P2OUT ^= BTN;
 
 	for(counter = 0; counter < 30000; counter++){}
 
 	P1OUT ^= LEDS;
-  P2OUT ^= BTN;
+  	P2OUT ^= BTN;
 
 	for(counter = 0; counter < 30000; counter++){}
 }
@@ -114,7 +115,7 @@ void main(void)
     P2REN |= BTN;
     P2OUT |= BTN;
 
-		while(1)
+    while(1)
     {
 		pisca();
     }
