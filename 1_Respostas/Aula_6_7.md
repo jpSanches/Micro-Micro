@@ -177,15 +177,94 @@ int Primalidade(unsigned int x){
 ```
 
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430. A variável de entrada é fornecida pelo registrador R15, e o valor de saída também.
+```Assembly
+Primo:
+	cmp.w R15, 2
+	jge Primo_Nao_Trivial ; if x < 2, trivial
+	clr.w R15 ; retorna 0 para triviais
+	ret
 
-6. Escreva uma função em C que calcula o duplo fatorial de n, representado por n!!. Se n for ímpar, n!! = 1*3*5*...* n, e se n for par, n!! = 2*4*6*...* n. Por exemplo, 9!! = 1*3*5*7*9 = 945 e 10!! = 2*4*6*8*10 = 3840. Além disso, 0!! = 1!! = 1.
+Primo_Nao_Trivial:
+	push.w R6 ; guarda R6 na pilha
+	mov.w R15, R6
+	mov.w R15, R14 ; teste = x
+	dec.w R14 ; teste = x - 1
+
+Primo_loop:
+	call Resto_Div ; calcula o resto de x/teste e retorna no R15
+	cmp R15, #0
+	jeq Primo_Loop_End ; if resto(x,teste) = 0, sai do loop
+	dec.w R13 ; teste--
+	jmp Primo_loop
+
+Primo_Loop_End:
+	pop.w R6 ; recupera R6 da pilha
+	cmp R14, #1
+	jne Primo_False
+	mov.w R15, #1 ; retorna 1 se for primo
+	ret
+
+Primo_False:
+	clr.w R15 ; retorna 0 se não for primo
+	ret
+```
+
+6. Escreva uma função em C que calcula o duplo fatorial de n, representado por n!!. Se n for ímpar, n!! = 1\*3\*5\*...\* n, e se n for par, n!! = 2\*4\*6\*...\* n. Por exemplo, 9!! = 1\*3\*5\*7\*9 = 945 e 10!! = 2\*4\*6\*8\*10 = 3840. Além disso, 0!! = 1!! = 1.
 O protótipo da função é:
 
 ```C
 unsigned long long DuploFatorial(unsigned long long n);
 ```
+```C
+unsigned long long DuploFatorial(unsigned long long n){
 
-7. (a) Escreva uma função em C que calcula a função exponencial utilizando a série de Taylor da mesma. Considere o cálculo até o termo n = 20. O protótipo da função é `double ExpTaylor(double x);`
+	if (n < 2){
+
+		return 1;
+
+	}else{
+
+		return n * DuploFatorial(n - 2);
+
+	}
+
+}
+
+```
+
+7. (a) Escreva uma função em C que calcula a função exponencial utilizando a série de Taylor da mesma. Considere o cálculo até o termo n = 20. O protótipo da função é
+
+```C
+double ExpTaylor(double x);
+```
+
+```C
+
+double fatorial(int n);
+
+double ExpTaylor(double x){
+	double sum = 0;
+	int n = 0;
+	for (n = 0; n < 20; n++){
+		sum+= (x**n/fatorial(abs(n));
+	}
+	return sum;
+}
+
+double fatorial(int n){
+	if (n < 1){
+
+		return 1;
+
+	}else{
+
+		return n * fatorial(n-1);
+
+	}
+}
+
+```
+
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430, mas considere que os valores de entrada e de saída são inteiros de 16 bits. A variável de entrada é fornecida pelo registrador R15, e o valor de saída também.
 
 8. Escreva uma sub-rotina na linguagem Assembly do MSP430 que indica se um vetor esta ordenado de forma decrescente. Por exemplo:
