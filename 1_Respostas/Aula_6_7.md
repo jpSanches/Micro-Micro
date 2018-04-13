@@ -27,38 +27,41 @@ unsigned int Raiz_Quadrada(unsigned int S)
 ```
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430. A variável `S` é fornecida pelo registrador R15, e a raiz quadrada de `S` (ou seja, a variável `x`) é fornecida pelo registrador R15 também.
 ```assembly
-Raiz_Quadrada: cmp #2,R15 ; compara se o valor de x**2 é 1 ou 0, evitando calculos
-jge Raiz_Nao_Trivial
-ret
-Raiz_Nao_Trivial: push R5 ; guarda o valor de R5 na pilha
-push R6 ; guarda R6 na pilha
-mov R15, R5 ; R5 = s
-inc R5 ; s+=1
-rra R5 ; s = (s+1)/2
-clr R6 ; limpa R6
-Raiz_Loop: cmp #10000,R6 ; verifica se n é menor do que 10**4
-jeq Raiz_End
-push R15 ; s para a pilha
-mov R5,R14 ; x para o denominador na rotina de div
-call Div ; implementar a sub-rotina de divisao
-add R15,R5 ; adiciona o resultado da div com x
-rra R5 ; divide por 2
-pop R15 ; recupera s
-inc R6 ; ++ no contador
-jump Raiz_Loop
-Raiz_End: mov R5,R15
-pop R6
-pop R5
-ret
+Raiz_Quadrada:
+	cmp #2,R15 ; compara se o valor de x**2 é 1 ou 0, evitando calculos
+	jge Raiz_Nao_Trivial
+	ret
+	Raiz_Nao_Trivial: push R5 ; guarda o valor de R5 na pilha
+	push R6 ; guarda R6 na pilha
+	mov R15, R5 ; R5 = s
+	inc R5 ; s+=1
+	rra R5 ; s = (s+1)/2
+	clr R6 ; limpa R6
+	Raiz_Loop: cmp #10000,R6 ; verifica se n é menor do que 10**4
+	jeq Raiz_End
+	push R15 ; s para a pilha
+	mov R5,R14 ; x para o denominador na rotina de div
+	call Div ; implementar a sub-rotina de divisao
+	add R15,R5 ; adiciona o resultado da div com x
+	rra R5 ; divide por 2
+	pop R15 ; recupera s
+	inc R6 ; ++ no contador
+	jump Raiz_Loop
+	Raiz_End: mov R5,R15
+	pop R6
+	pop R5
+	ret
 
 Div:
     clr R13 ; R13 = k = 0
     clr R12 ; R12 = q
+
 Mult_Loop:
     add.w R14, R13 ; k+= x
     inc.w R12 ; q++
     cmp R13,R15
     jge Mult_Loop ; se S >= k.x, permanece no loop
+
 End_Mult_Loop:
     dec.w R12 ; q--
     mov.w R12, R15 ; retorna q
@@ -85,13 +88,14 @@ int Potencia(int x, int N){
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430. `x` e `n` são fornecidos através dos registradores R15 e R14, respectivamente, e a saída deverá ser fornecida no registrador R15.
 
 
-```assembly
+```Assembly
 
 Potencia:
         cmp R14, #0
         jne Potencia_nao_trivial
         mov.w #1, R15 ; se n = 0, retorna 1
         ret
+
 Potencia_nao_trivial:
         push R6 ; guarda R6 na pilha
         mov.w R14, R6 ; r6 = r14 = n
@@ -102,6 +106,7 @@ Loop:
         call Mult ; multiplica R15 por x
         dec.w R6 ; n--
         jmp Loop
+
 Loop_Exit:
         pop R6 ; tira R6 da pilha
         ret
@@ -110,14 +115,15 @@ Mult:
         mov.w R15, R14
         mov.w R15, R13
         clr.w R15
+
 Mult_Loop:
         add.w R13, R15
         dec.w R14
         cmp R14, #0 ; se R14 > 0, fica no loop
         jl Mult_Loop
+
 Mult_Exit:
         ret
-
 ```
 
 3. Escreva uma sub-rotina na linguagem Assembly do MSP430 que calcula a divisão de `a` por `b`, onde `a`, `b` e o valor de saída são inteiros de 16 bits. `a` e `b` são fornecidos através dos registradores R15 e R14, respectivamente, e a saída deverá ser fornecida através do registrador R15.
@@ -237,7 +243,6 @@ unsigned long long DuploFatorial(unsigned long long n){
 ```C
 double ExpTaylor(double x);
 ```
-
 ```C
 
 double fatorial(int n);
@@ -246,7 +251,7 @@ double ExpTaylor(double x){
 	double sum = 0;
 	int n = 0;
 	for (n = 0; n < 20; n++){
-		sum+= (x**n/fatorial(abs(n));
+		sum+= (x**n/fatorial(n));
 	}
 	return sum;
 }
@@ -262,16 +267,73 @@ double fatorial(int n){
 
 	}
 }
-
 ```
 
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430, mas considere que os valores de entrada e de saída são inteiros de 16 bits. A variável de entrada é fornecida pelo registrador R15, e o valor de saída também.
+```Assembly
+Exp_Taylor: ; R15 = x
+	push R5 ; guarda R5 na pilha
+	push R6 ; guarda R6 na pilha
+	clr R5 ; n = 0
+	clr R6 ; sum = 0
 
+For_loop:
+	cmp #20, R5
+	jge For_Loop_End ; se R5 >= #20, sai do loop
+	mov.w R5, R14 ; R14 = R5 = n
+	call Potencia ; R15 = x**n
+	push R15 ; guarda x**n na pilha
+
+	mov.w R5, R15 ; R15 = n
+	call Fatorial ; fatorial de R15 = fatorial(n)
+	mov.w R15, R14 ; R14 = fatorial(n)
+	pop R15 ; recupera x**n da pilha em R15
+
+	call Div ; R15 = (x**n)/fatorial(n)
+
+	add.w R15, R6 ; sum+= (x**n)/fatorial(n)
+	jmp For_loop
+
+For_Loop_End:
+	pop R6 ; recupera R6 da pilha
+	pop R5 ; recuepra R6 da pilha
+	ret
+```
 8. Escreva uma sub-rotina na linguagem Assembly do MSP430 que indica se um vetor esta ordenado de forma decrescente. Por exemplo:
 [5 4 3 2 1] e [90 23 20 10] estão ordenados de forma decrescente.
 [1 2 3 4 5] e [1 2 3 2] não estão.
 O primeiro endereço do vetor é fornecido pelo registrador R15, e o tamanho do vetor é fornecido pelo registrador R14. A saída deverá ser fornecida no registrador R15, valendo 1 quando o vetor estiver ordenado de forma decrescente, e valendo 0 em caso contrário.
 
+```Assembly
+Ordem_Dec:
+	push.w R5
+	push.w R6
+	mov.w R15, R6 ; R6 = &a[0]
+	mov.w R14, R5; R5 = len(a)
+	mov.w R6 ,R14
+	incd.w R14
+
+Comp_Loop:
+	cmp R15, R14
+	jl Nao_dec ; se a(x+1)<a(x), não é decrescente
+	incd.w R15
+	incd.w R14
+	dec.w R5
+	cmp R5, #0
+	jne Comp_Loop ; se R5 = 0, é decrescente
+
+Sim_dec:
+	pop.w R6
+	pop.w R5
+	mov.w #1, R15
+	ret
+
+Nao_Dec:
+	pop.w R6
+	pop.w R5
+	clr R15
+	ret
+```
 9. Escreva uma sub-rotina na linguagem Assembly do MSP430 que calcula o produto escalar de dois vetores, `a` e `b`. O primeiro endereço do vetor `a` deverá ser passado através do registrador R15, o primeiro endereço do vetor `b` deverá ser passado através do registrador R14, e o tamanho do vetor deverá ser passado pelo registrador R13. A saída deverá ser fornecida no registrador R15.
 
 10. (a) Escreva uma função em C que indica se um vetor é palíndromo. Por exemplo:
