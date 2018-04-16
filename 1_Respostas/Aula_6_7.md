@@ -427,14 +427,15 @@ Palin_Loop:
 
 	jmp Palin_Loop
 
+Palin_Loop_End:
 	cmp R13, R6 ; se count = tamanho, ret 1
-	jne Palin_Loop_End
+	jne Palin_False
 	pop R6 ; recupera R6 da pilha
 	mov.w #1, R15
 	ret
-
-Palin_Loop_End:
+	
+Palin_False: 
 	pop R6 ; recupera R6 da pilha
-	clr R15
+	clr R15 ; se count != tamanho, ret 0
 	ret
 ```
