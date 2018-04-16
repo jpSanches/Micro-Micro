@@ -11,6 +11,7 @@ O protótipo da função é:
 ```C
 unsigned int Raiz_Quadrada(unsigned int S);
 ```
+
 ```C
 unsigned int Raiz_Quadrada(unsigned int S)
 {
@@ -75,21 +76,24 @@ int Potencia(int x, int N);
 ```C
 int Potencia(int x, int N){
     int pot = x;
-    if (N = 0) return 1;
-    while (N != 1){
-        pot = pot * x;
-        N--;
-    }
-    return pot;
-}
 
+    if (N = 0) return 1;
+
+    while (N != 1){
+
+	    pot = pot * x;
+        N--;
+
+	}
+
+	return pot;
+}
 ```
 
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430. `x` e `n` são fornecidos através dos registradores R15 e R14, respectivamente, e a saída deverá ser fornecida no registrador R15.
 
 
 ```Assembly
-
 Potencia:
         cmp R14, #0
         jne Potencia_nao_trivial
@@ -141,7 +145,6 @@ End_Mult_Loop:
     dec.w R12 ; q--
     mov.w R12, R15 ; retorna q
     ret
-
 ```
 
 4. Escreva uma sub-rotina na linguagem Assembly do MSP430 que calcula o resto da divisão de `a` por `b`, onde `a`, `b` e o valor de saída são inteiros de 16 bits. `a` e `b` são fornecidos através dos registradores R15 e R14, respectivamente, e a saída deverá ser fornecida através do registrador R15.
@@ -169,16 +172,27 @@ int Primalidade(unsigned int x);
 int Primalidade(unsigned int x){
     unsigned int teste = x - 1;
 
-    if (x < 2)
-        return 0; // x não é primo
+    if (x < 2){
 
-    while(x % teste != 0)
-        teste--;
+		return 0; // x não é primo
 
-    if (teste = 1)
-        return 1; // x é primo
-    return 0; // x não é primo
+	}
 
+    while(x % teste != 0){
+
+		teste--;
+
+	}
+
+    if (teste = 1){
+
+		return 1; // x é primo
+
+	}else{
+
+		return 0; // x não é primo
+
+	}
 }
 ```
 
@@ -235,7 +249,6 @@ unsigned long long DuploFatorial(unsigned long long n){
 	}
 
 }
-
 ```
 
 7. (a) Escreva uma função em C que calcula a função exponencial utilizando a série de Taylor da mesma. Considere o cálculo até o termo n = 20. O protótipo da função é
@@ -244,15 +257,18 @@ unsigned long long DuploFatorial(unsigned long long n){
 double ExpTaylor(double x);
 ```
 ```C
-
 double fatorial(int n);
 
 double ExpTaylor(double x){
 	double sum = 0;
 	int n = 0;
+
 	for (n = 0; n < 20; n++){
+
 		sum+= (x**n/fatorial(n));
+
 	}
+
 	return sum;
 }
 
@@ -336,6 +352,30 @@ Nao_Dec:
 ```
 9. Escreva uma sub-rotina na linguagem Assembly do MSP430 que calcula o produto escalar de dois vetores, `a` e `b`. O primeiro endereço do vetor `a` deverá ser passado através do registrador R15, o primeiro endereço do vetor `b` deverá ser passado através do registrador R14, e o tamanho do vetor deverá ser passado pelo registrador R13. A saída deverá ser fornecida no registrador R15.
 
+```assembly
+Prod_Int:
+	push R5 ; guarda R5 na pilha
+	mov.w R14, R5 ; R5 = &b(0)
+	push R6 ; guarda R6 na pilha
+	mov.w R15, R6 ; R6 = &a(0)
+
+	clr R12 ; R12 = 0
+
+PI_Loop:
+	mov.w 0(R6), R15
+	mov.w 0(R5), R14
+	call Multiplica ; r15 = R15 * R14
+	add.w R15, R12
+	incd.w R6
+	incd.w R5
+	dec.w R13
+
+Primo_Loop_End:
+	mov.w R12, R15
+	pop R6
+	pop R5
+	ret
+```
 10. (a) Escreva uma função em C que indica se um vetor é palíndromo. Por exemplo:
 	[1 2 3 2 1] e [0 10 20 20 10 0] são palíndromos.
 	[5 4 3 2 1] e [1 2 3 2] não são.
@@ -344,5 +384,57 @@ Se o vetor for palíndromo, retorne o valor 1. Caso contrário, retorne o valor 
 ```C
 int Palindromo(int vetor[ ], int tamanho);
 ```
+```C
+int Palindromo(int vetor[ ], int tamanho){
+	int count = 0;
 
+	while(vetor[count] == vetor[tamanho-1 -count] && count < tamanho){
+
+		count++;
+
+	}
+
+	if (count = tamanho){ // se percorreu todo vetor, ret 1
+
+		return 1; // é palindromo
+
+	}else{ // se nao, ret 0
+
+		return 0; // não é palindromo
+
+	}
+}
+```
 (b) Escreva a sub-rotina equivalente na linguagem Assembly do MSP430. O endereço do vetor de entrada é dado pelo registrador R15, o tamanho do vetor é dado pelo registrador R14, e o resultado é dado pelo registrador R15.
+```Assembly
+Palindromo:
+	push R6 ; guarda R6 na pilha
+	mov.w R14, R6 ; R6 = tamanho
+	clr R13 ; R13 = 0
+	dec R14 ; tamanho--
+	rla R14 ; tamanho = 2 * tamanho
+	add R15, R14 ; R14 = &a[tamanho-1]
+
+Palin_Loop:
+	cmp R6, R13
+	jge Palin_Loop_End ; se count >= tamanho, sai do loop
+	cmp 0(R15), 0(R14)
+	jne Palin_Loop_End ; se vetor[count] == vetor[tamanho-1 -count, continua no loop
+
+	incd.w R15
+	decd.d R14
+	inc.w R13 ; count++
+
+	jmp Palin_Loop
+
+	cmp R13, R6 ; se count = tamanho, ret 1
+	jne Palin_Loop_End
+	pop R6 ; recupera R6 da pilha
+	mov.w #1, R15
+	ret
+
+Palin_Loop_End:
+	pop R6 ; recupera R6 da pilha
+	clr R15
+	ret
+```
