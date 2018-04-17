@@ -31,7 +31,7 @@ void main (void){
     PM5CTL0 &= ~LOCKLPM5;
     P1DIR  = LED1 + LED2;
     P1OUT = LED1;
-    
+
     for(;;){
         P1OUT ^= (LED1 + LED2);
         for(count = 0; count < 32000; count++){
@@ -172,12 +172,12 @@ void pisca(){
     P1OUT ^= LEDS;
     P2OUT ^= BTN;
 
-		for(counter = 0; counter < 30000; counter++){}
+	for(counter = 0; counter < 30000; counter++){}
 
-		P1OUT ^= LEDS;
+	P1OUT ^= LEDS;
     P2OUT ^= BTN;
 
-		for(counter = 0; counter < 30000; counter++){}
+	for(counter = 0; counter < 30000; counter++){}
 }
 
 ```
