@@ -2,7 +2,8 @@
 ```C
 void Atraso(volatile unsigned int x);
 void Atraso(volatile unsigned int x){
-
+    TA0CCR0 = 62500-1; //10000-1;
+    	TA0CTL = TASSEL_2 + ID_3 + MC_1;
 }
 ```
 
